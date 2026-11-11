@@ -182,6 +182,7 @@ footer{padding:1.75rem 0 2.5rem;color:var(--mute);font-size:0.875rem;border-top:
 var R=function(w,h,src,room){return{w:w,h:h,src:src||"",room:room||""}};
 var PROJECTS=[
 {id:"privilegia-310",title:"Privilegia 310 м²",pinned:true,cover:1,desc:"",
+ hero:{i:1,video:"video/privilegia-310.mp4",poster:"img/privilegia-310-poster.jpg",a:[1.0567,-28.98,-22.43,1024,768]},
  renders:[
   R(1086,1448,"img/privilegia-310-01.jpg","Гостиная"),
   R(1448,1086,"img/privilegia-310-02.jpg","Гостиная"),
@@ -396,7 +397,7 @@ function layout(){
  if(cur<0)return;var p=PROJECTS[cur],host=$("rows");host.innerHTML="";thumbs=[];
  var probe=document.createElement("div");probe.className="row";host.appendChild(probe);var gap=parseFloat(getComputedStyle(probe).columnGap)||24;host.removeChild(probe);
  var W=host.clientWidth,mob=window.innerWidth<=760,H=Math.round(W*.52),groups=[],g=null;
- p.renders.forEach(function(r,k){if(r.hero)return;if(!g||g.room!==r.room){g={room:r.room,items:[]};groups.push(g)}g.items.push({r:r,k:k})});
+ p.renders.forEach(function(r,k){if(p.hero&&k===(p.hero.i||0))return;if(!g||g.room!==r.room){g={room:r.room,items:[]};groups.push(g)}g.items.push({r:r,k:k})});
  groups.forEach(function(g){
   var sec=document.createElement("section");sec.className="rsec";
   if(g.room){var h=document.createElement("h3");h.className="rh";h.textContent=g.room;sec.appendChild(h)}
@@ -408,12 +409,12 @@ function layout(){
    box.appendChild(el);row=[];sum=0}
   g.items.forEach(function(it){row.push(it);sum+=ratio(it.r);if(sum*H+gap*(row.length-1)>=W)flush(false)});
   if(row.length)flush(true)});
- if(heroEl&&p.renders[0]&&p.renders[0].hero)thumbs[0]=heroEl}
+ if(heroEl&&p.hero)thumbs[p.hero.i||0]=heroEl}
 
 function buildHero(p){
  var host=$("hero");host.innerHTML="";heroEl=null;
- if(!p.hero||!p.renders[0]||!p.renders[0].hero)return;
- var h=p.hero,r=p.renders[0],b=document.createElement("button");b.className="phero";b.setAttribute("aria-label",p.title);
+ if(!p.hero)return;
+ var h=p.hero,hi=h.i||0,r=p.renders[hi],b=document.createElement("button");b.className="phero";b.setAttribute("aria-label",p.title);
  var im=new Image();im.src=r.src;im.alt="";im.decoding="async";
  var A=h.a,finished=false,v=null;
  function finish(animate){if(finished)return;finished=true;
@@ -431,7 +432,7 @@ function buildHero(p){
   setTimeout(function(){if(!finished&&v.paused&&v.currentTime===0)finish(false)},4000);
  }
  b.appendChild(im);if(!v)b.classList.add("done");
- b.onclick=function(){if(!finished)finish(false);openLb(0)};
+ b.onclick=function(){if(!finished)finish(false);openLb(hi)};
  host.appendChild(b);heroEl=b}
 function show(i){
  var pe=$("proj");if(hiding){pe.getAnimations().forEach(function(x){x.cancel()});hiding=false}
