@@ -75,6 +75,9 @@ a:hover{color:var(--mute)}
 .tools{list-style:none;display:flex;flex-wrap:wrap;gap:1.25rem 1.5rem}
 .tools li{display:flex;flex-direction:column;align-items:center;gap:.6rem;width:6rem;text-align:center}
 .ti{display:grid;place-items:center;width:4.25rem;height:4.25rem;border:1px solid var(--line);border-radius:1rem;font-family:var(--serif);font-size:1.5rem;color:var(--ink);transition:transform .25s cubic-bezier(.2,.7,.2,1),border-color .25s}
+.ti img.nf{filter:none;width:70%;height:70%;border-radius:.45rem}
+.ti img{width:55%;height:55%;object-fit:contain;filter:brightness(0) invert(.94)}
+.tools.minor{margin-top:-.25rem}.tools.minor .ti{width:3.25rem;height:3.25rem;border-radius:.8rem}
 .tn{font-size:.95rem;color:var(--mute);line-height:1.2}
 @media (hover:hover){.tools li:hover .ti{transform:translateY(-4px);border-color:var(--mute)}}
 .tx{font-size:1rem}
@@ -149,8 +152,8 @@ footer{padding:1.75rem 0 2.5rem;color:var(--mute);font-size:0.875rem;border-top:
 <h3 class="rh">Чем занимаюсь</h3>
 <ul class="al2"><li>Дизайн интерьера</li><li>3D-визуализация жилых и коммерческих интерьеров, домов</li><li>3D-моделирование мебели, светильников, зданий</li><li>Постобработка рендеров</li><li>AI-визуализация: улучшение рендеров, концепции, видео</li></ul>
 <h3 class="rh">Программы</h3>
-<ul class="tools"><li><span class="ti">3ds</span><span class="tn">Autodesk 3ds Max</span></li><li><span class="ti">Cr</span><span class="tn">Corona Renderer</span></li><li><span class="ti">D5</span><span class="tn">D5 Render</span></li><li><span class="ti">Ps</span><span class="tn">Adobe Photoshop</span></li><li><span class="ti">Kr</span><span class="tn">Krea AI</span></li><li><span class="ti">GPT</span><span class="tn">ChatGPT</span></li><li><span class="ti">Cl</span><span class="tn">Claude</span></li></ul>
-<p class="tx">Также работал в AutoCAD, SketchUp и Revit.</p>
+<ul class="tools"><li><span class="ti">3ds</span><span class="tn">Autodesk 3ds Max</span></li><li><span class="ti"><img src="img/icons/corona.svg" alt="" loading="lazy"></span><span class="tn">Corona Renderer</span></li><li><span class="ti">D5</span><span class="tn">D5 Render</span></li><li><span class="ti"><img class="nf" src="img/icons/photoshop.svg" alt="" loading="lazy"></span><span class="tn">Adobe Photoshop</span></li><li><span class="ti">Kr</span><span class="tn">Krea AI</span></li><li><span class="ti"><img class="nf" src="img/icons/chatgpt.svg" alt="" loading="lazy"></span><span class="tn">ChatGPT</span></li><li><span class="ti"><img src="img/icons/claude.svg" alt="" loading="lazy"></span><span class="tn">Claude</span></li></ul>
+<p class="tx">Дополнительно</p><ul class="tools minor"><li><span class="ti"><img src="img/icons/autocad.svg" alt="" loading="lazy"></span><span class="tn">AutoCAD</span></li><li><span class="ti"><img src="img/icons/sketchup.svg" alt="" loading="lazy"></span><span class="tn">SketchUp</span></li><li><span class="ti"><img src="img/icons/revit.svg" alt="" loading="lazy"></span><span class="tn">Revit</span></li></ul>
 <h3 class="rh">Сотрудничество</h3>
 <p>Открыт к работе с дизайн-студиями, архитекторами, застройщиками и частными заказчиками. Могу подключиться к готовому проекту или разработать концепцию с нуля.</p>
 <div class="ct" id="contact"><a href="mailto:hello@example.com">hello@example.com</a><a href="https://t.me/username">t.me/username</a></div>
