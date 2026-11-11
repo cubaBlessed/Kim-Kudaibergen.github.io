@@ -420,10 +420,10 @@ function buildHero(p){
  function finish(animate){if(finished)return;finished=true;
   if(v){v.pause()}
   b.classList.add("done");
-  if(animate&&!RM){
+  if(animate){
    var tr="translate("+(A[1]/A[3]*100)+"%,"+(A[2]/A[4]*100)+"%) scale("+A[0]+")";
    im.animate([{opacity:0,transform:tr},{opacity:1,transform:"none"}],{duration:1100,easing:"cubic-bezier(.45,.05,.25,1)",fill:"backwards"})}}
- if(!RM&&h.video){
+ if(h.video){
   v=document.createElement("video");v.muted=true;v.defaultMuted=true;v.playsInline=true;v.setAttribute("playsinline","");v.preload="auto";v.poster=h.poster||"";v.src=h.video;
   v.addEventListener("ended",function(){finish(true)});
   v.addEventListener("error",function(){finish(false)});
