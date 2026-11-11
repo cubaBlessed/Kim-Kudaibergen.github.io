@@ -64,6 +64,21 @@ a:hover{color:var(--mute)}
 .about{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;padding:6rem 0;border-top:1px solid var(--line);margin-top:6rem}
 .about h2{font-weight:300;font-size:clamp(1.625rem,3vw,2.5rem);line-height:1.2;letter-spacing:-.02em;max-width:18ch}
 .about p{color:var(--mute);max-width:52ch}
+.about{grid-template-columns:1fr 1.2fr;gap:3rem clamp(2rem,6vw,6rem);align-items:start}
+.about .al{display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:2rem}
+.about .ar{display:flex;flex-direction:column;gap:1.25rem}
+.about .ar .rh{margin-top:1.5rem}.about .ar .rh:first-child{margin-top:0}
+.about p{max-width:60ch}
+.af{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.5rem;margin-top:.75rem;font-size:1.25rem}.af dt{color:var(--mute)}.af dd{color:var(--ink)}
+.al2,.tools{padding:0;margin:0}
+.al2{list-style:none;display:flex;flex-direction:column;gap:.6rem;color:var(--ink)}
+.tools{list-style:none;display:flex;flex-wrap:wrap;gap:1.25rem 1.5rem}
+.tools li{display:flex;flex-direction:column;align-items:center;gap:.6rem;width:6rem;text-align:center}
+.ti{display:grid;place-items:center;width:4.25rem;height:4.25rem;border:1px solid var(--line);border-radius:1rem;font-family:var(--serif);font-size:1.5rem;color:var(--ink);transition:transform .25s cubic-bezier(.2,.7,.2,1),border-color .25s}
+.tn{font-size:.95rem;color:var(--mute);line-height:1.2}
+@media (hover:hover){.tools li:hover .ti{transform:translateY(-4px);border-color:var(--mute)}}
+.tx{font-size:1rem}
+@media (max-width:760px){.about .al{position:static}.tools li{width:5.2rem}}
 .about .ct{margin-top:0;display:flex;flex-direction:column;gap:0.25rem;color:var(--ink);font-weight:400}
 footer{padding:1.75rem 0 2.5rem;color:var(--mute);font-size:0.875rem;border-top:1px solid var(--line)}
 /* project view */
@@ -124,8 +139,22 @@ footer{padding:1.75rem 0 2.5rem;color:var(--mute);font-size:0.875rem;border-top:
 <div class="works" id="works"></div>
 </section>
 <section class="about" id="about">
-<h2>Работаю с дизайнерами, архитекторами и застройщиками</h2>
-<div><div class="ct" id="contact"><a href="mailto:hello@example.com">hello@example.com</a><a href="https://t.me/username">t.me/username</a></div></div>
+<div class="al">
+<h2>Дизайнер интерьера и 3D-визуализатор</h2>
+<p>Разрабатываю дизайн-концепции, моделирую и делаю фотореалистичную визуализацию интерьеров и архитектуры. Могу самостоятельно смоделировать объект любой сложности: от мебели и светильников до целого здания.</p>
+<p>Работал в студиях Arve Design и Arteless, до этого брал проекты на фрилансе и аутсорсе. В 2026 году окончил Satbayev University.</p>
+<dl class="af"><dt>Город</dt><dd>Алматы, Казахстан</dd><dt>Студии</dt><dd>Arve Design, Arteless</dd><dt>Образование</dt><dd>Satbayev University, 2026</dd></dl>
+</div>
+<div class="ar">
+<h3 class="rh">Чем занимаюсь</h3>
+<ul class="al2"><li>Дизайн интерьера</li><li>3D-визуализация жилых и коммерческих интерьеров, домов</li><li>3D-моделирование мебели, светильников, зданий</li><li>Постобработка рендеров</li><li>AI-визуализация: улучшение рендеров, концепции, видео</li></ul>
+<h3 class="rh">Программы</h3>
+<ul class="tools"><li><span class="ti">3ds</span><span class="tn">Autodesk 3ds Max</span></li><li><span class="ti">Cr</span><span class="tn">Corona Renderer</span></li><li><span class="ti">D5</span><span class="tn">D5 Render</span></li><li><span class="ti">Ps</span><span class="tn">Adobe Photoshop</span></li><li><span class="ti">Kr</span><span class="tn">Krea AI</span></li><li><span class="ti">GPT</span><span class="tn">ChatGPT</span></li><li><span class="ti">Cl</span><span class="tn">Claude</span></li></ul>
+<p class="tx">Также работал в AutoCAD, SketchUp и Revit.</p>
+<h3 class="rh">Сотрудничество</h3>
+<p>Открыт к работе с дизайн-студиями, архитекторами, застройщиками и частными заказчиками. Могу подключиться к готовому проекту или разработать концепцию с нуля.</p>
+<div class="ct" id="contact"><a href="mailto:hello@example.com">hello@example.com</a><a href="https://t.me/username">t.me/username</a></div>
+</div>
 </section>
 <footer>© 2026 Ким Кудайберген</footer>
 </div>
