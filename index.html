@@ -78,6 +78,11 @@ footer{padding:28px 0 40px;color:var(--mute);font-size:14px;border-top:1px solid
 .phead dl{display:grid;grid-template-columns:auto 1fr;gap:6px 24px;margin-top:20px;font-size:15px}
 .phead dt{color:var(--mute)}.phead dd{font-weight:400}
 .rows{display:flex;flex-direction:column;gap:clamp(72px,9vw,150px);padding-bottom:120px}
+.phero{display:block;position:relative;overflow:hidden;width:min(100%,calc(82vh*4/3));aspect-ratio:4/3;margin:0 auto 0;padding:0;border:0;background:#111;cursor:pointer;transition:none}
+.phero video,.phero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.phero img{opacity:0;transform-origin:0 0}
+.phero.done img{opacity:1}.phero.done video{display:none}
+#hero{margin-bottom:clamp(72px,9vw,150px)}#hero:empty{display:none}
 .rsec{display:flex;flex-direction:column;gap:20px}
 .rbox{display:flex;flex-direction:column;gap:var(--g)}
 .proj .wrap{padding:0 max(28px,8vw)}
@@ -129,6 +134,7 @@ footer{padding:28px 0 40px;color:var(--mute);font-size:14px;border-top:1px solid
 <div class="wrap">
 <div class="bar"><button id="back">← Все проекты</button><span id="pn"></span></div>
 <div class="phead"><h2 id="pt"></h2><div><p id="pd"></p><dl id="pm"></dl></div></div>
+<div id="hero"></div>
 <div class="rows" id="rows"></div>
 <div class="nextp"><button id="prevP"></button><button id="nextP"></button></div>
 </div>
@@ -160,6 +166,11 @@ var PROJECTS=[
   R(1086,1448,"img/privilegia-310-11.jpg","Прихожая"),
   R(938,1677,"img/privilegia-310-12.jpg","Прихожая"),
   R(1086,1448,"img/privilegia-310-13.jpg","Прихожая")
+ ]},
+{id:"aknar",title:"AKNAR",cover:0,desc:"",
+ hero:{video:"video/aknar.mp4",poster:"img/aknar-poster.jpg",a:[1.0275,-14.68,-14.92,1024,768]},
+ renders:[
+  {w:2200,h:1760,src:"img/aknar-01.jpg",room:"",hero:true}
  ]},
 {id:"abaya-130-70",title:"Abaya 130 70 м²",cover:5,desc:"",
  renders:[
@@ -249,7 +260,7 @@ function ph(r,cls){var d=document.createElement(cls||"div");d.className="ph";d.s
  if(r.src){var i=new Image();i.src=r.src;i.alt="";i.decoding="async";d.appendChild(i)}return d}
 function cover(p){return p.renders[p.cover||0]}
 function pad(n){return n<10?"0"+n:n}
-var cur=-1,lbI=0,list=[],thumbs=[],hiding=false;
+var heroEl=null,cur=-1,lbI=0,list=[],thumbs=[],hiding=false;
 
 /* «Портфолио»: смена шрифта раз в секунду, только 5 секунд при входе, затем остаётся финальный */
 var POOL=[["Cormorant Garamond",300,"italic"],["Prata",400,"normal"],["Noto Serif Display",300,"normal"],["Playfair Display",400,"italic"],["Forum",400,"normal"],["Spectral",300,"italic"],["Tenor Sans",400,"normal"],["Jost",300,"normal"],["Raleway",200,"normal"],["Philosopher",400,"normal"],["Alice",400,"normal"]];
@@ -283,7 +294,7 @@ function layout(){
  if(cur<0)return;var p=PROJECTS[cur],host=$("rows");host.innerHTML="";thumbs=[];
  var probe=document.createElement("div");probe.className="row";host.appendChild(probe);var gap=parseFloat(getComputedStyle(probe).columnGap)||24;host.removeChild(probe);
  var W=host.clientWidth,mob=window.innerWidth<=760,H=Math.round(W*.52),groups=[],g=null;
- p.renders.forEach(function(r,k){if(!g||g.room!==r.room){g={room:r.room,items:[]};groups.push(g)}g.items.push({r:r,k:k})});
+ p.renders.forEach(function(r,k){if(r.hero)return;if(!g||g.room!==r.room){g={room:r.room,items:[]};groups.push(g)}g.items.push({r:r,k:k})});
  groups.forEach(function(g){
   var sec=document.createElement("section");sec.className="rsec";
   if(g.room){var h=document.createElement("h3");h.className="rh";h.textContent=g.room;sec.appendChild(h)}
@@ -294,8 +305,32 @@ function layout(){
    row.forEach(function(it){var d=ph(it.r,"button");d.style.setProperty("--r",ratio(it.r));if(last&&sum*H+gap*(row.length-1)<W*.8)d.style.flex="0 0 "+Math.round(ratio(it.r)*H)+"px";d.onclick=function(){openLb(it.k)};thumbs[it.k]=d;el.appendChild(d)});
    box.appendChild(el);row=[];sum=0}
   g.items.forEach(function(it){row.push(it);sum+=ratio(it.r);if(sum*H+gap*(row.length-1)>=W)flush(false)});
-  if(row.length)flush(true)})}
+  if(row.length)flush(true)});
+ if(heroEl&&p.renders[0]&&p.renders[0].hero)thumbs[0]=heroEl}
 
+function buildHero(p){
+ var host=$("hero");host.innerHTML="";heroEl=null;
+ if(!p.hero||!p.renders[0]||!p.renders[0].hero)return;
+ var h=p.hero,r=p.renders[0],b=document.createElement("button");b.className="phero";b.setAttribute("aria-label",p.title);
+ var im=new Image();im.src=r.src;im.alt="";im.decoding="async";
+ var A=h.a,finished=false,v=null;
+ function finish(animate){if(finished)return;finished=true;
+  if(v){v.pause()}
+  b.classList.add("done");
+  if(animate&&!RM){
+   var tr="translate("+(A[1]/A[3]*100)+"%,"+(A[2]/A[4]*100)+"%) scale("+A[0]+")";
+   im.animate([{opacity:0,transform:tr},{opacity:1,transform:"none"}],{duration:1100,easing:"cubic-bezier(.45,.05,.25,1)",fill:"backwards"})}}
+ if(!RM&&h.video){
+  v=document.createElement("video");v.muted=true;v.defaultMuted=true;v.playsInline=true;v.setAttribute("playsinline","");v.preload="auto";v.poster=h.poster||"";v.src=h.video;
+  v.addEventListener("ended",function(){finish(true)});
+  v.addEventListener("error",function(){finish(false)});
+  b.appendChild(v);
+  var pr=v.play();if(pr&&pr.catch)pr.catch(function(){finish(false)});
+  setTimeout(function(){if(!finished&&v.paused&&v.currentTime===0)finish(false)},4000);
+ }
+ b.appendChild(im);if(!v)b.classList.add("done");
+ b.onclick=function(){if(!finished)finish(false);openLb(0)};
+ host.appendChild(b);heroEl=b}
 function show(i){
  var pe=$("proj");if(hiding){pe.getAnimations().forEach(function(x){x.cancel()});hiding=false}
  var was=!pe.hidden,dir=i>=cur?1:-1;
@@ -307,11 +342,11 @@ function show(i){
  $("prevP").textContent="← "+pr.title;$("prevP").onclick=function(){go(pr.id)};
  $("nextP").textContent=nx.title+" →";$("nextP").onclick=function(){go(nx.id)};
  document.querySelector(".nextp").style.display=PROJECTS.length>1?"":"none";
- $("proj").hidden=false;$("proj").scrollTop=0;document.body.style.overflow="hidden";layout();
+ $("proj").hidden=false;$("proj").scrollTop=0;document.body.style.overflow="hidden";buildHero(p);layout();
  if(was&&!RM)pe.firstElementChild.animate([{opacity:0,transform:"translateX("+(dir*10)+"vw)"},{opacity:1,transform:"none"}],{duration:520,easing:EASE})}
 function hide(){
  var pe=$("proj");if(pe.hidden||hiding)return;
- cur=-1;closeLb(true);document.body.style.overflow="";
+ cur=-1;closeLb(true);var hv=document.querySelector("#hero video");if(hv)hv.pause();document.body.style.overflow="";
  if(RM){pe.hidden=true;return}
  hiding=true;
  var an=pe.animate([{transform:"none",opacity:1},{transform:"translateX(10vw)",opacity:0}],{duration:460,easing:EASE,fill:"forwards"});
